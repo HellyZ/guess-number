@@ -12,30 +12,46 @@ const isNumber = function (num) {
 
 function guessNumber() {
   const num = Math.floor(Math.random() * (100 - 1) + 1);
+  console.log(num);
+  let count = 10;
 
-  function ask() {
-    let input = prompt("Угадай число от 1 до 100");
-    if (isNumber(input)) {
-      if (+input > num) {
-        alert("Загаданное число меньше");
-        ask();
-      } else if (+input < num) {
-        alert("Загаданное число больше");
-        ask();
+  function ask(count) {
+    console.log("ask function");
+    if (count > 0) {
+      let input = prompt("Угадай число от 1 до 100");
+      console.log(count);
+      if (isNumber(input)) {
+        if (+input > num) {
+          count--;
+          alert(`Загаданное число меньше, осталось попыток ${count}`);
+          ask(count);
+        } else if (+input < num) {
+          alert(`Загаданное число больше, осталось попыток ${count}`);
+          count--;
+          ask(count);
+        } else {
+          if (confirm("Поздравляю, Вы угадали!!! Хотели бы сыграть еще?")) {
+            count = 10;
+            ask(count);
+          }
+        }
       } else {
-        alert("Поздравляю, Вы угадали!!!");
+        if (isNull(input)) {
+          alert("Игра окончена!");
+        } else {
+          alert("Введите число!");
+          ask(count);
+        }
       }
     } else {
-      if (isNull(input)) {
-        alert("Игра окончена");
-      } else {
-        alert("Введите число!" + +input);
-        ask();
+      if (confirm("Попытки закончились, хотите сыграть еще?")) {
+        count = 10;
+        ask(count);
       }
     }
   }
 
-  ask();
+  ask(count);
 }
 
 guessNumber();
